@@ -1,12 +1,23 @@
 <% if @restaurants.any? %>
   <% @restaurants.each do |restaurant| %>
     <ul>
-      <li><%= restaurant.name %></li>
+      <li>
+      <%= link_to restaurant.name, restaurant_path(restaurant) %><br>
+      <%= restaurant.description %><br>
+      
+      <%= link_to "Edit #{restaurant.name}", edit_restaurant_path(restaurant) %>
+      <%= link_to "Delete #{restaurant.name}", restaurant_path(restaurant), method: :delete %>
+      <%= link_to "Review #{restaurant.name}", new_restaurant_review_path(restaurant) %></li>
     </ul>
   <% end %>
 
 <% else %>
   No restaurants yet
 <% end %>
+
+<br><br>
+<%= notice %>
+<%= yield %>
+
 
 <a href="/restaurants/new">Add a restaurant</a>
