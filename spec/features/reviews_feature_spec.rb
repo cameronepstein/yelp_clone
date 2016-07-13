@@ -1,4 +1,5 @@
 require 'rails_helper'
+require_relative '../helpers/web_helper'
 
 feature 'reviewing' do
   let!(:kfc) { Restaurant.create name: 'KFC' }
