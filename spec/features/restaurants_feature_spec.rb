@@ -16,7 +16,7 @@ feature 'restaurants' do
   context 'no restaurants have been added' do
     scenario 'should display a prompt to add a restaurant' do
       visit '/'
-      sign_up_and_sign_in
+      sign_up
       expect(page).to have_content 'No restaurants yet'
       expect(page).to have_link 'Add a restaurant'
     end
@@ -25,7 +25,7 @@ feature 'restaurants' do
   context 'creating restaurants' do
     scenario 'should display a restaurant once added' do
       visit '/'
-      sign_up_and_sign_in
+      sign_up
       click_link 'Add a restaurant'
       fill_in('Name', with: 'Cams Chicken Hut')
       click_button 'Create Restaurant'
@@ -46,10 +46,16 @@ feature 'restaurants' do
   end
 
   context 'editing restaurants' do
+
+    scenario 'user cannot edit a restaurant which they have not created' do
+
+    end
+
     before { Restaurant.create name: 'KFC', description: 'Finger Clickin Chick-chick-hicken' }
 
     scenario 'lets a user edit a restaurant' do
       visit '/'
+      sign_up
       click_link 'Edit KFC'
       fill_in 'Name', with: 'Kentucky Fried Chicken'
       fill_in 'Description', with: 'Finger Lickin Chick-chick-hicken'
@@ -65,6 +71,7 @@ feature 'restaurants' do
 
     scenario 'lets a user delete a restaurant' do
       visit '/'
+      sign_up
       click_link 'Delete Nobu'
       expect(page).not_to have_content 'Nobu'
       expect(page).to have_content 'Restaurant deleted successfully'
@@ -74,7 +81,7 @@ feature 'restaurants' do
   context 'invalid restaurant' do
     it 'does not let you submit a name that is too short' do
       visit '/'
-      sign_up_and_sign_in
+      sign_up
       click_link 'Add a restaurant'
       fill_in 'Name', with: 'KF'
       click_button 'Create Restaurant'
