@@ -30,10 +30,8 @@ feature 'restaurants' do
     scenario 'should display a restaurant once added' do
       visit '/'
       sign_up
-      click_link 'Add a restaurant'
-      fill_in('Name', with: 'Cams Chicken Hut')
-      click_button 'Create Restaurant'
-      expect(page).to have_content 'Cams Chicken Hut'
+      add_a_restaurant('KFC')
+      expect(page).to have_content 'KFC'
       expect(current_path).to eq '/restaurants'
     end
   end
@@ -52,11 +50,10 @@ feature 'restaurants' do
 
   context 'editing restaurants' do
 
-    before { Restaurant.create name: 'KFC', description: 'Finger Clickin Chick-chick-hicken' }
-
     scenario 'lets a user edit a restaurant' do
       visit '/'
       sign_up
+      add_a_restaurant('KFC')
       click_link 'Edit KFC'
       fill_in 'Name', with: 'Kentucky Fried Chicken'
       fill_in 'Description', with: 'Finger Lickin Chick-chick-hicken'
@@ -72,9 +69,7 @@ feature 'restaurants' do
     scenario 'lets a user delete a restaurant they have created' do
       visit '/'
       sign_up
-      click_link 'Add a restaurant'
-      fill_in 'Name', with: 'KFC'
-      click_button 'Create Restaurant'
+      add_a_restaurant('KFC')
       click_link 'Delete KFC'
       expect(page).not_to have_content 'KFC'
       expect(page).to have_content 'Restaurant deleted successfully'
@@ -83,9 +78,7 @@ feature 'restaurants' do
     scenario 'does not let a user delete a restaurant they have not created' do
       visit '/'
       sign_up
-      click_link 'Add a restaurant'
-      fill_in 'Name', with: 'KFC'
-      click_button 'Create Restaurant'
+      add_a_restaurant('KFC')
       click_link 'Sign out'
       sign_up('cam@cam.com', 'password')
       expect(page).not_to have_content 'Delete KFC'
@@ -97,9 +90,7 @@ feature 'restaurants' do
     scenario 'does not let a user edit a restaurant they have not created' do
       visit '/'
       sign_up
-      click_link 'Add a restaurant'
-      fill_in 'Name', with: 'KFC'
-      click_button 'Create Restaurant'
+      add_a_restaurant('KFC')
       click_link 'Sign out'
       sign_up('cam@cam.com', 'password')
       expect(page).not_to have_content 'Edit KFC'
@@ -112,9 +103,7 @@ feature 'restaurants' do
     it 'does not let you submit a name that is too short' do
       visit '/'
       sign_up
-      click_link 'Add a restaurant'
-      fill_in 'Name', with: 'KF'
-      click_button 'Create Restaurant'
+      add_a_restaurant('KF')
       expect(page).not_to have_css 'h2', text: 'KF'
       expect(page).to have_content 'error'
     end
