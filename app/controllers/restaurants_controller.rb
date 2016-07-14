@@ -14,6 +14,8 @@ before_action :authenticate_user!, :except => [:index, :show]
   def create
     # Restaurant.create(restaurant_params)
     @restaurant = Restaurant.new(restaurant_params)
+    @restaurant.user_id = current_user.id
+
     if @restaurant.save
       redirect_to restaurants_path
     else
@@ -45,7 +47,7 @@ before_action :authenticate_user!, :except => [:index, :show]
   private
 
   def restaurant_params
-    params.require(:restaurant).permit(:name, :description)
+    params.require(:restaurant).permit(:name, :description, :user_id)
   end
 
 end

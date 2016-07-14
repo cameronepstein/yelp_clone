@@ -2,7 +2,9 @@ require 'rails_helper'
 require_relative '../helpers/web_helper'
 
 feature 'restaurants' do
+
   context 'restaurants have been added' do
+
     before do
       Restaurant.create(name: 'KFC')
     end
@@ -14,6 +16,7 @@ feature 'restaurants' do
   end
 
   context 'no restaurants have been added' do
+
     scenario 'should display a prompt to add a restaurant' do
       visit '/'
       sign_up
@@ -23,6 +26,7 @@ feature 'restaurants' do
   end
 
   context 'creating restaurants' do
+
     scenario 'should display a restaurant once added' do
       visit '/'
       sign_up
@@ -35,6 +39,7 @@ feature 'restaurants' do
   end
 
   context 'viewing restaurants' do
+
     let!(:kfc){ Restaurant.create(name:'KFC') }
 
     scenario 'lets a user view a restaurant' do
@@ -46,10 +51,6 @@ feature 'restaurants' do
   end
 
   context 'editing restaurants' do
-
-    scenario 'user cannot edit a restaurant which they have not created' do
-
-    end
 
     before { Restaurant.create name: 'KFC', description: 'Finger Clickin Chick-chick-hicken' }
 
@@ -67,18 +68,47 @@ feature 'restaurants' do
   end
 
   context 'deleting restaurants' do
-    before { Restaurant.create name: 'Nobu', description: 'Sushi' }
 
-    scenario 'lets a user delete a restaurant' do
+    scenario 'lets a user delete a restaurant they have created' do
       visit '/'
       sign_up
-      click_link 'Delete Nobu'
-      expect(page).not_to have_content 'Nobu'
+      click_link 'Add a restaurant'
+      fill_in 'Name', with: 'KFC'
+      click_button 'Create Restaurant'
+      click_link 'Delete KFC'
+      expect(page).not_to have_content 'KFC'
       expect(page).to have_content 'Restaurant deleted successfully'
+    end
+
+    scenario 'does not let a user delete a restaurant they have not created' do
+      visit '/'
+      sign_up
+      click_link 'Add a restaurant'
+      fill_in 'Name', with: 'KFC'
+      click_button 'Create Restaurant'
+      click_link 'Sign out'
+      sign_up('cam@cam.com', 'password')
+      expect(page).not_to have_content 'Delete KFC'
     end
   end
 
+  context 'editing restaurants' do
+
+    scenario 'does not let a user edit a restaurant they have not created' do
+      visit '/'
+      sign_up
+      click_link 'Add a restaurant'
+      fill_in 'Name', with: 'KFC'
+      click_button 'Create Restaurant'
+      click_link 'Sign out'
+      sign_up('cam@cam.com', 'password')
+      expect(page).not_to have_content 'Edit KFC'
+    end
+  end
+
+
   context 'invalid restaurant' do
+
     it 'does not let you submit a name that is too short' do
       visit '/'
       sign_up

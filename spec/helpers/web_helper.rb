@@ -6,6 +6,3 @@ def sign_up(email = 'test@example.com', password = 'password', password_confirma
   fill_in 'Password confirmation', with: password_confirmation
   click_button 'Sign up'
 end
-
-def log_in_and_add_restaurant
-end

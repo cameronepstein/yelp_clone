@@ -6,6 +6,7 @@ feature 'reviewing' do
 
   scenario 'allows user to review a restaurant' do
     visit '/restaurants'
+    sign_up
     click_link 'Review KFC'
     fill_in "Thoughts", with: "so so"
     select '3', from: 'Rating'
