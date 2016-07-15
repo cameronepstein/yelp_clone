@@ -7,9 +7,19 @@ def sign_up(email = 'test@example.com', password = 'password', password_confirma
   click_button 'Sign up'
 end
 
-
 def add_a_restaurant(name)
   click_link 'Add a restaurant'
   fill_in 'Name', with: name
   click_button 'Create Restaurant'
+end
+
+def leave_review(thoughts, rating)
+  visit '/'
+  sign_up('test@test.com', 'password')
+  visit '/restaurants'
+  # add_a_restaurant('KFC')
+  click_link 'Review KFC'
+  fill_in 'Thoughts', with: thoughts
+  select rating, from: 'Rating'
+  click_button 'Leave Review'
 end

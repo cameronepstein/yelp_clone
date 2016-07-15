@@ -12,8 +12,12 @@ class ReviewsController < ApplicationController
     @review = Review.new(review_params)
     @review.user_id = current_user.id
     @review.restaurant_id = @restaurant.id
-    @review.save
-    redirect_to restaurant_path(@restaurant)
+    if @review.save
+      redirect_to restaurant_path(@restaurant)
+    else
+      flash[:notice] = "You have already reviewed this restaurant"
+      redirect_to restaurant_path(@restaurant)
+    end
   end
 
   private
